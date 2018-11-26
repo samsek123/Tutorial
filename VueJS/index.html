@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>Vue JS</title>
+    <style>
+      [v-cloak] {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- v-cloak is useful before render -->
+    <div id="app" v-cloak>
+      <!--
+      {{dataname}}
+      used to display data variable
+      -->
+      <h2>Part 1</h2>
+      <p>{{dataA}}</p>
+
+      <!--
+      v-bind:attrname="dataname"
+      :attrname="dataname"
+      used to bind attribute to data variable
+      -->
+      <h2>Part 2 (v-bind)</h2>
+      <input type="button" v-bind:value="dataValue"/>
+      <img :src="dataSrc" />
+
+      <!--
+      v-if="dataname == 'A'"
+      v-else-if="dataname == 'B'"
+      v-else
+      v-show
+      used to show and hide the dom object, it will destroy the
+      And it is for sibling dom only
+      -->
+      <h2>Part 3 (v-if / v-show)</h2>
+      <div>
+        <span v-if="object == 'A'">object A</span>
+        <span v-else-if="object == 'B'">object B</span>
+        <span v-else>object Other</span>
+      </div>
+      <!--
+      v-for="(data, index) in dataarray"
+      v-for="n in 10"
+      used to loop the dom object in an array
+      -->
+      <h2>Part 4 (v-for)</h2>
+      <div v-for="item in personal_info">
+        {{item.name}}'s favorite color is <span :style="'color: ' + item.color">{{item.color}}</span> and hobby is {{item.hobby}}
+        <span style="color: red"></span>
+      </div>
+
+      <!--
+      v-on:eventtype="methodname"
+      @eventtype="methodname"
+      used to handle event
+      -->
+      <h2>Part 5 (v-on)</h2>
+      <p>{{ message }}</p>
+      <button v-on:click="reverseMessage">Reverse Message</button>
+      <input type="text" @focus="reverseMessage" />
+
+      <!--
+      v-model="dataname"
+      used to bind the data and change the data when the dom is changing
+      -->
+      <h2>Part 6 (v-model)</h2>
+      <input type="text" v-model="textInput" /> {{`(${textInput})`}}<br/>
+      <input type="radio" v-model="radioButton" value="optionA" />
+      <input type="radio" v-model="radioButton" value="optionB" />({{radioButton}})<br/>
+      <select v-model="select">
+        <option value=""></option>
+        <option v-for="item in personal_info" :value="item.name">{{item.name}}</option>
+      </select>
+      ({{select}})
+    </div>
+    <input type="text" id="input"/>
+    <script src="./js/jquery.min.js" ></script>
+    <script src="./js/vue.min.js" ></script>
+    <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        dataA: 'Sample Message 1',
+
+        // v-bind
+        dataValue: 'Button A',
+        dataSrc: 'https://via.placeholder.com/50x50',
+
+        // v-if
+        object: 'A',
+
+        // v-for
+        personal_info: [
+          {name: 'Billy', color: 'blue', hobby: 'skate'},
+          {name: 'Ken', color: 'red', hobby: 'cycle'},
+          {name: 'David', color: 'yellow', hobby: 'sleep'}
+        ],
+
+        // Event Action
+        message: 'Hello Vue.js!',
+
+        // Model
+        textInput: '',
+        radioButton: 'optionA',
+        select: '',
+      },
+      methods: {
+        reverseMessage: function () {
+          // this refer to vue app
+          this.message = this.message.split('').reverse().join('');
+          /*
+          var that = this;
+          $.ajax({
+      			type:"POST",
+      			url:"./api/main.php",
+      			data:{
+      				action: '',
+      			},
+      			success :function(data){
+              app.message = data.result;
+              that.message = data.result;
+      			}
+      	  });
+          */
+        }
+      }
+    });
+
+    $(document).ready(function() {
+      app.textInput = 'hello world';
+      // This is for checking after render event
+      Vue.nextTick(function() {
+
+      });
+    });
+    </script>
+  </body>
+</html>
